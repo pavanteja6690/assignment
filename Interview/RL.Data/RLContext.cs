@@ -13,7 +13,7 @@ public class RLContext : DbContext
     public RLContext() { }
     public RLContext(DbContextOptions<RLContext> options) : base(options) { }
 
-    protected override async void OnModelCreating(ModelBuilder builder)
+    protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
 

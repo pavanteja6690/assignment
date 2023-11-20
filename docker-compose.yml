@@ -1,21 +1,22 @@
-version: '3.7'
+version: "3.7"
 
 services:
-
   rlfe:
     container_name: rlfe
     build:
       context: ./interview-frontend
       dockerfile: ./Dockerfile
     volumes:
-      - './interview-frontend:/app'
-      - '/app/node_modules'
+      - "./interview-frontend:/app"
+      - "/app/node_modules"
     ports:
       - 3001:3000
     environment:
       - CHOKIDAR_USEPOLLING=true
       - WATCHPACK_POLLING=true
       - WDS_SOCKET_PORT=3001
+    networks:
+      - rlfe_network
 
   rlapi:
     container_name: rlapi
@@ -26,3 +27,12 @@ services:
       - DOTNET_ENVIRONMENT=Development
     ports:
       - 10010:80
+    networks:
+      - rlapi_network
+
+networks:
+  rlfe_network:
+    # Define specific configurations for rlfe network
+
+  rlapi_network:
+    # Define specific configurations for rlapi network
