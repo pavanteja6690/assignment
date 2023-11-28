@@ -3,10 +3,10 @@ using RL.Backend.Models;
 
 namespace RL.Backend.Commands
 {
-    public class AssignUsersToPlanProcedureCommand : IRequest<ApiResponse<Unit>>
+    public class RemoveUserFromPlanProcedureCommand : IRequest<ApiResponse<Unit>>
     {
         public int PlanId { get; set; }
         public int ProcedureId { get; set; }
-        public List<int> AssignedUsers { get; set; } = new();
+        public int RemovedUser { get; set; }
     }
 }

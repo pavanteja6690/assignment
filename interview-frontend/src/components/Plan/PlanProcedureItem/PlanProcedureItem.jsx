@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import ReactSelect from "react-select";
-import { assignUsersToPlanProcedure } from "../../../api/api";
+import {
+  assignUsersToPlanProcedure,
+  removeUserFromPlanProcedure,
+} from "../../../api/api";
 import { useParams } from "react-router-dom";
 
 const PlanProcedureItem = ({ procedure, users, assignedUsers }) => {
-  const [selectedUsers, setSelectedUsers] = useState(null);
+  const [selectedUsers, setSelectedUsers] = useState([]);
   const { id } = useParams();
   useEffect(() => {
     let assignedUserOptions = [];
@@ -14,14 +17,42 @@ const PlanProcedureItem = ({ procedure, users, assignedUsers }) => {
       );
       setSelectedUsers(assignedUserOptions);
     }
-  }, []);
+  }, [assignedUsers]);
   const handleAssignUserToProcedure = async (e) => {
-    setSelectedUsers(e);
+    setSelectedUsers([...selectedUsers, e]);
     await assignUsersToPlanProcedure(
       Number(id),
       Number(procedure.procedureId),
-      e ? e.map((x) => Number(x.value)) : []
+      Number(e.value)
     );
+  };
+
+  const handleRemoveUserFromProcedure = async (e) => {
+    let updatedUsersList = structuredClone(selectedUsers);
+    console.log(updatedUsersList);
+    updatedUsersList = updatedUsersList.filter(
+      (user) => Number(user.value) !== Number(e.value)
+    );
+    setSelectedUsers(updatedUsersList);
+    await removeUserFromPlanProcedure(
+      Number(id),
+      Number(procedure.procedureId),
+      Number(e.value)
+    );
+  };
+
+  const handleUserChange = async (users) => {
+    const beforeSet = new Set(selectedUsers);
+    const afterSet = new Set(users);
+
+    const addedUsers = [...afterSet].filter((user) => !beforeSet.has(user));
+    const removedUsers = [...beforeSet].filter((user) => !afterSet.has(user));
+
+    if (addedUsers.length > 0) {
+      handleAssignUserToProcedure(addedUsers[0]);
+    } else {
+      handleRemoveUserFromProcedure(removedUsers[0]);
+    }
   };
 
   return (
@@ -34,7 +65,7 @@ const PlanProcedureItem = ({ procedure, users, assignedUsers }) => {
         isMulti={true}
         options={users}
         value={selectedUsers}
-        onChange={(e) => handleAssignUserToProcedure(e)}
+        onChange={(e) => handleUserChange(e)}
       />
     </div>
   );

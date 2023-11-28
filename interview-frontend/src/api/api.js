@@ -36,13 +36,13 @@ export const addProcedureToPlan = async (planId, procedureId) => {
 export const assignUsersToPlanProcedure = async (
   planId,
   procedureId,
-  assignedUserIDs
+  assignedUserID
 ) => {
-  const url = `${api_url}/PlanProcedure/AssignUsersToPlanProcedure`;
+  const url = `${api_url}/PlanProcedure/AssignUserToPlanProcedure`;
   var command = {
     planId: planId,
     procedureId: procedureId,
-    assignedUsers: assignedUserIDs,
+    assignedUser: assignedUserID,
   };
   const response = await fetch(url, {
     method: "POST",
@@ -54,6 +54,32 @@ export const assignUsersToPlanProcedure = async (
   });
 
   if (!response.ok) throw new Error("Failed to assign users to plan procedure");
+
+  return true;
+};
+
+export const removeUserFromPlanProcedure = async (
+  planId,
+  procedureId,
+  removedUserId
+) => {
+  const url = `${api_url}/PlanProcedure/RemoveUserFromPlanProcedure`;
+  var command = {
+    planId: planId,
+    procedureId: procedureId,
+    removedUser: removedUserId,
+  };
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(command),
+  });
+
+  if (!response.ok)
+    throw new Error("Failed to remove user from plan procedure");
 
   return true;
 };

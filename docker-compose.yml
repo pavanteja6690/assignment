@@ -15,8 +15,6 @@ services:
       - CHOKIDAR_USEPOLLING=true
       - WATCHPACK_POLLING=true
       - WDS_SOCKET_PORT=3001
-    networks:
-      - rlfe_network
 
   rlapi:
     container_name: rlapi
@@ -27,12 +25,3 @@ services:
       - DOTNET_ENVIRONMENT=Development
     ports:
       - 10010:80
-    networks:
-      - rlapi_network
-
-networks:
-  rlfe_network:
-    # Define specific configurations for rlfe network
-
-  rlapi_network:
-    # Define specific configurations for rlapi network

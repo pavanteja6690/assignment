@@ -30,8 +30,16 @@ public class PlanProcedureController : ControllerBase
         return _context.PlanProcedures;
     }
 
-    [HttpPost("AssignUsersToPlanProcedure")]
-    public async Task<IActionResult> AssignUsersToPlanProcedure(AssignUsersToPlanProcedureCommand command, CancellationToken token)
+    [HttpPost("AssignUserToPlanProcedure")]
+    public async Task<IActionResult> AssignUsersToPlanProcedure(AssignUserToPlanProcedureCommand command, CancellationToken token)
+    {
+        var response = await _mediator.Send(command, token);
+
+        return response.ToActionResult();
+    }
+
+    [HttpPost("RemoveUserFromPlanProcedure")]
+    public async Task<IActionResult> RemoveUserFromPlanProcedure(RemoveUserFromPlanProcedureCommand command, CancellationToken token)
     {
         var response = await _mediator.Send(command, token);
 
